@@ -20,8 +20,9 @@ jobs:
       - name: Build
         run: |
           sudo apt update
-          sudo apt install -y meson libxrandr-dev libxxf86vm-dev libxcb-*-dev libx11-xcb-dev libxfixes-dev libdrm-dev libx11-dev
+          sudo apt install -y meson libxrandr-dev libxxf86vm-dev libxcb-*-dev libx11-xcb-dev libxfixes-dev libdrm-dev libx11-dev llvm
           pip3 install mako
+          export ANDROID_NDK_HOME="$ANDROID_SDK_ROOT/ndk-bundle"
           envsubst <android-${{matrix.arch}} >build-crossfile
           git clone --depth 1 https://gitlab.freedesktop.org/mesa/mesa/
           git clone --depth 1 https://github.com/Vera-Firefly/mesa-build-fix
@@ -34,6 +35,7 @@ jobs:
             -Dplatform-sdk-version=25 \
             -Dandroid-stub=true \
             -Dxlib-lease=disabled \
+            -Dllvm=disabled \
             -Degl=disabled \
             -Dgbm=disabled \
             -Dglx=disabled \
